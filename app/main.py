@@ -151,6 +151,9 @@ def extract_page_urls(url, xpath_filter):
         # Skip relative links
         if not dst.startswith("http://") and not dst.startswith("https://"):
             continue
+	
+        if any(skip_url in dst for skip_url in SKIP_URLS_CONTAINING):
+            continue
         
         # Strip any url fragment
         dst_s = dst.split("#")
@@ -356,6 +359,8 @@ LINKWARDEN_TOKEN = os.getenv('LINKWARDEN_TOKEN', False)
 LINKWARDEN_TAGS = os.getenv('LINKWARDEN_TAGS' , "SiteLinks").split(",")
 LINKWARDEN_COLLECTION_NAME = os.getenv('LINKWARDEN_COLLECTION_NAME' , "Unorganized")
 MAX_ENTRIES = int(os.getenv('MAX_ENTRIES', 0))
+SKIP_URLS_CONTAINING = os.getenv('SKIP_URLS_CONTAINING', '').split(',')
+
 
 # This is used as a cache and will be updated later
 LINKWARDEN_COLLECTION = [False, False]
